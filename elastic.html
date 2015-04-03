@@ -1,6 +1,6 @@
 <html>
 	<head>
-    <!-- <link rel="stylesheet" href="jquery-ui.min.css"> -->
+    <link rel="stylesheet" href="jquery-ui.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script src="jquery.autocomplete.min.js"></script>
 		<script src="jquery-ui.min.js"></script>
@@ -11,7 +11,7 @@
 		$(function() {
 	    $("#keyword").autocomplete({
         source: function(request, response) {
-          var wildcard = { "company_name": request.term.toLowerCase() };
+          var wildcard = { "company_name": "*" + request.term.toLowerCase() + "*"};
           console.log(wildcard);
           var postData = {
               "query": { "wildcard": wildcard },
