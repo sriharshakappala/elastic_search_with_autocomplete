@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="jquery.autocomplete.min.js"></script>
+		<script src="jquery-ui.min.js"></script>
+	</head>
+	<body>
+		<input type="text" id="keyword">
+		<script>
+		$(function() {
+	    $("#keyword").autocomplete({
+        source: function(request, response) {
+          var wildcard = { "company_name": request.term.toLowerCase() };
+          console.log(wildcard);
+          var postData = {
+              "query": { "wildcard": wildcard },
+              "fields": ["company_name", "_id"]
+          };
+          $.ajax({
+            url: "http://localhost:9200/company/external/_search",
+            type: "POST",
+            dataType: "JSON",
+            data: JSON.stringify(postData),
+            success: function(data) {
+            	console.log(data);
+              response($.map(data.hits.hits, function(item) {
+                return {
+                  label: item.fields.company_name,
+                  id: item.fields._id
+                }
+              }));
+            },
+          });
+        },
+        minLength: 2
+	    })
+		});
+	</script>
+	</body>	
+</html>
